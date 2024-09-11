@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:schedule/ui/home.dart';
+import 'package:schedule/ui/schedule.dart';
+import 'package:schedule/ui/settings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,7 +13,9 @@ class _HomePageState extends State<HomePage> {
   int navigationIndex = 0;
 
   List<Widget> navigationPages = [
-    const Home(),
+    const HomePage(),
+    const SchedulePage(),
+    const SettingsPage()
   ];
 
   @override
