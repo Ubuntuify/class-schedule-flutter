@@ -30,7 +30,7 @@ class App extends StatelessWidget {
             seedColor: Colors.green, brightness: Brightness.dark),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const AppScaffold(),
     );
   }
 }

@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:schedule/ui/home.dart';
 import 'package:schedule/ui/schedule.dart';
 import 'package:schedule/ui/settings.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class AppScaffold extends StatefulWidget {
+  const AppScaffold({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<AppScaffold> createState() => _AppScaffoldState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _AppScaffoldState extends State<AppScaffold> {
   int navigationIndex = 0;
 
   List<Widget> navigationPages = [
     const HomePage(),
     const SchedulePage(),
-    const SettingsPage()
+    const SettingsPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      // PopScope is setup for predictive back gestures on Android
-      canPop: true,
-      child: Scaffold(
-        body: navigationPages[navigationIndex],
-        floatingActionButton: FloatingActionButton(
+    return Scaffold(
+      body: navigationPages[0],
+      floatingActionButton: FloatingActionButton(
           onPressed: () => {},
           child: const Icon(Icons.add),
         ),
@@ -49,7 +47,6 @@ class _HomePageState extends State<HomePage> {
           selectedIndex: navigationIndex,
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         ),
-      ),
     );
   }
 }
