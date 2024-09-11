@@ -22,7 +22,7 @@ class _AppScaffoldState extends State<AppScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: navigationPages[0],
+      body: navigationPages[navigationIndex],
       floatingActionButton: FloatingActionButton(
           onPressed: () => {},
           child: const Icon(Icons.add),
