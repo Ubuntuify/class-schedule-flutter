@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:schedule/ui/home.dart';
+import 'package:schedule/ui/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
