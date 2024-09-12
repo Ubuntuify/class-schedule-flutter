@@ -11,10 +11,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(5),
+          child: Text('Hi, <PLACEHOLDER>!'),
+        )
+      ],
+    );
   }
 
-  Class _getNextClass() {
+  Subject _getNextSubject() {
     throw UnimplementedError(
         'getNextClass private function not yet implemented.');
   }

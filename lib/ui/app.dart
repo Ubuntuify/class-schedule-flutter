@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule/ui/class_list.dart';
 import 'package:schedule/ui/home.dart';
 import 'package:schedule/ui/schedule.dart';
 import 'package:schedule/ui/settings.dart';
@@ -24,8 +25,9 @@ class _AppScaffoldState extends State<AppScaffold> {
     return Scaffold(
       body: navigationPages[navigationIndex],
       floatingActionButton: FloatingActionButton(
-          onPressed: () => {},
-          child: const Icon(Icons.add),
+        onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const ClassListPage())),
+        child: const Icon(Icons.add),
         ),
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) =>

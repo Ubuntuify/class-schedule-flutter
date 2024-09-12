@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:schedule/ui/app.dart';
 
 void main() async {
@@ -29,6 +30,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.green, brightness: Brightness.dark),
         useMaterial3: true,
+        textTheme: GoogleFonts.bricolageGrotesqueTextTheme(),
       ),
       home: const AppScaffold(),
     );

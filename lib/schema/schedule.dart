@@ -1,6 +1,6 @@
 import 'dart:core';
 
-class Class {
+class Subject {
   final int id;
 
   final String name;
@@ -9,7 +9,7 @@ class Class {
 
   final bool isRestPeriod;
 
-  const Class(
+  const Subject(
       {required this.id,
       required this.name,
       required this.isVisible,
@@ -57,13 +57,13 @@ class ClassTime {
 
   final int dayScheduleId;
 
-  final int classId;
+  final int subjectId;
 
   final int scheduleTimeSlotId;
 
   const ClassTime(
       {required this.id,
       required this.dayScheduleId,
-      required this.classId,
+      required this.subjectId,
       required this.scheduleTimeSlotId});
 }
