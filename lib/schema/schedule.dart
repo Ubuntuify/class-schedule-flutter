@@ -27,6 +27,11 @@ class Subject {
       'is_rest_period': isRestPeriod,
     };
   }
+
+  @override
+  String toString() {
+    return "{'id': $id, 'name': $name, 'is_visible': $isVisible, 'is_rest_period': $isRestPeriod}";
+  }
 }
 
 class DaySchedule {
@@ -103,20 +108,16 @@ class User {
   final int id;
 
   // Data field
-  final List<Subject> subjects;
-
-  bool get isDefault {
-    return (id == 0);
-  }
+  final List<int> subjectIds;
 
   // TODO: see if implementation can be changed
 
-  const User({required this.id, required this.subjects});
+  const User({required this.id, required this.subjectIds});
 
   Map<String, Object?> toMap() {
     return {
       'id': id,
-      'subjects': subjects,
+      'subject_ids': subjectIds,
     };
   }
 }
@@ -131,16 +132,23 @@ class Reminder {
   // Reminder description
   final String description;
 
+  // Subject (ownership)
+  final int subjectId;
+
   // TODO: add more required fields.
 
   const Reminder(
-      {required this.id, required this.name, required this.description});
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.subjectId});
 
   Map<String, Object?> toMap() {
     return {
       'id': id,
       'name': name,
       'description': description,
+      'subject_id': subjectId,
     };
   }
 }
