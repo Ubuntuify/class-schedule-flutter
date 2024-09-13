@@ -1,69 +1,146 @@
 import 'dart:core';
 
 class Subject {
+  // Primary key
   final int id;
 
+  // Display name
   final String name;
 
+  // If it is visible in the user interface
   final bool isVisible;
 
+  // If the subject is a rest period and you should be notified
   final bool isRestPeriod;
 
   const Subject(
-      {required this.id,
+      {required this.id, // primary key should always come first
       required this.name,
       required this.isVisible,
       required this.isRestPeriod});
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'is_visible': isVisible,
+      'is_rest_period': isRestPeriod,
+    };
+  }
 }
 
 class DaySchedule {
+  // Primary key
   final int id;
 
+  // Weekday, should be compatible with Dart's weekdays.
   final int weekday;
 
+  // If this schedule is the default one that should be used.
   final bool isSpecial;
 
   const DaySchedule(
-      {required this.id, required this.weekday, required this.isSpecial})
-      : assert(weekday >= 7, "Invalid weekday field.");
+      {required this.id, required this.weekday, required this.isSpecial});
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'weekday': weekday,
+      'is_special': isSpecial,
+    };
+  }
 }
 
 class ScheduleTimeSlot {
+  // Primary key
   final int id;
 
+  // Foreign key – day schedule id mapping.
   final int dayScheduleId;
 
-  final int startMinute;
-  final int startHour;
+  // TODO: add a better date implementation
 
-  final int endMinute;
-  final int endHour;
+  const ScheduleTimeSlot({required this.id, required this.dayScheduleId});
 
-  const ScheduleTimeSlot(
-      {required this.id,
-      required this.dayScheduleId,
-      required this.startHour,
-      required this.startMinute,
-      required this.endHour,
-      required this.endMinute})
-      : assert(startHour >= 24, "Invalid startHour field."),
-        assert(endHour >= 24, "Invalid endHour field."),
-        assert(startMinute >= 60, "Invalid startMinute field."),
-        assert(endMinute >= 60, "Invalid endMinute field.");
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'day_schedule_id': dayScheduleId,
+    };
+  }
 }
 
-class ClassTime {
+class ClassTimeMap {
+  // Primary key
   final int id;
 
+  // Foreign key – DaySchedule
   final int dayScheduleId;
 
+  // Foreign key – Subject
   final int subjectId;
 
+  // Foreign key – ScheduleTimeSlot
   final int scheduleTimeSlotId;
 
-  const ClassTime(
+  const ClassTimeMap(
       {required this.id,
       required this.dayScheduleId,
       required this.subjectId,
       required this.scheduleTimeSlotId});
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'day_schedule_id': dayScheduleId,
+      'schedule_time_slot_id': scheduleTimeSlotId,
+    };
+  }
+}
+
+class User {
+  // Primary key
+  final int id;
+
+  // Data field
+  final List<Subject> subjects;
+
+  bool get isDefault {
+    return (id == 0);
+  }
+
+  // TODO: see if implementation can be changed
+
+  const User({required this.id, required this.subjects});
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'subjects': subjects,
+    };
+  }
+}
+
+class Reminder {
+  // Primary key
+  final int id;
+
+  // Reminder name
+  final String name;
+
+  // Reminder description
+  final String description;
+
+  // TODO: add more required fields.
+
+  const Reminder(
+      {required this.id, required this.name, required this.description});
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+    };
+  }
 }

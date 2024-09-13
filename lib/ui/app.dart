@@ -28,27 +28,27 @@ class _AppScaffoldState extends State<AppScaffold> {
         onPressed: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => const ClassListPage())),
         child: const Icon(Icons.add),
-        ),
-        bottomNavigationBar: NavigationBar(
-          onDestinationSelected: (int index) =>
-              setState(() => navigationIndex = index),
-          destinations: const [
-            NavigationDestination(
-                icon: Icon(Icons.home_outlined),
-                selectedIcon: Icon(Icons.home),
-                label: 'Home'),
-            NavigationDestination(
-                icon: Icon(Icons.calendar_month_outlined),
-                selectedIcon: Icon(Icons.calendar_month),
-                label: 'Classes'),
-            NavigationDestination(
-                icon: Icon(Icons.settings_outlined),
-                selectedIcon: Icon(Icons.settings),
-                label: 'Settings')
-          ],
-          selectedIndex: navigationIndex,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        ),
+      ),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) =>
+            setState(() => navigationIndex = index),
+        destinations: const [
+          NavigationDestination(
+              icon: Icon(Icons.home_outlined),
+              selectedIcon: Icon(Icons.home),
+              label: 'Home'),
+          NavigationDestination(
+              icon: Icon(Icons.calendar_month_outlined),
+              selectedIcon: Icon(Icons.calendar_month),
+              label: 'Classes'),
+          NavigationDestination(
+              icon: Icon(Icons.settings_outlined),
+              selectedIcon: Icon(Icons.settings),
+              label: 'Settings')
+        ],
+        selectedIndex: navigationIndex,
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+      ),
     );
   }
 }
