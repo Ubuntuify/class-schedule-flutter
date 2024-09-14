@@ -4,6 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:schedule/ui/app.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+    statusBarColor: Colors.transparent,
+  ));
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
   runApp(const App());
 }
 
@@ -12,42 +20,35 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /***
-     * Sets up edge-to-edge support on Android.
-     */
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
-        statusBarColor: Colors.transparent));
-
-    /***
-     * Returns Material app with Material You activated.
-     */
     return MaterialApp(
       title: 'Schedule App (WIP)',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.green, brightness: Brightness.light),
-        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade600),
         useMaterial3: true,
         textTheme: GoogleFonts.bricolageGrotesqueTextTheme(),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            // Set the predictive back transitions for Android.
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          },
+        ),
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.green, brightness: Brightness.dark),
+            seedColor: Colors.green.shade600, brightness: Brightness.dark),
         brightness: Brightness.dark,
         useMaterial3: true,
         textTheme: GoogleFonts.bricolageGrotesqueTextTheme(),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            // Set the predictive back transitions for Android.
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          },
+        ),
       ),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       home: const AppScaffold(),
     );
-  }
-}
-
-extension Range on num {
-  bool isBetween(num from, num to) {
-    return from < this && this < to;
   }
 }

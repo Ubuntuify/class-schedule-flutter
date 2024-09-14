@@ -42,6 +42,8 @@ class DatabaseManager {
     CREATE TABLE subject ( 
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
       name TEXT, 
+      description TEXT,
+      location TEXT,
       is_visible INTEGER, 
       is_rest_period INTEGER
     );
@@ -58,12 +60,16 @@ class DatabaseManager {
       for (final {
             'id': id as int,
             'name': name as String,
+            'description': description as String,
+            'location': location as String,
             'is_visible': isVisible as bool,
             'is_rest_period': isRestPeriod as bool,
           } in subjects)
         Subject(
             id: id,
             name: name,
+            description: description,
+            location: location,
             isVisible: isVisible,
             isRestPeriod: isRestPeriod),
     ];

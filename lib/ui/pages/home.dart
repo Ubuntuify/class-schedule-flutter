@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:schedule/services/db.dart';
 
 import '../../schema/subject.dart';
@@ -16,19 +15,56 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text(
-              'Hello, \$user!',
-              style: GoogleFonts.righteous(fontSize: 20, color: Colors.white),
-            ))
-      ],
-    );
+    return const Column(children: [
+      Padding(
+          padding: EdgeInsets.symmetric(vertical: 7.5, horizontal: 10),
+          child: Row(
+            children: [
+              Card(
+                child: SizedBox(
+                  height: 100,
+                  width: 200,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Row(
+                          children: [
+                            Text('Next Class'),
+                            Spacer(),
+                            Icon(Icons.school),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Text(
+                          'Psychology 1A',
+                        ), // TODO: change stub
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.schedule, size: 15),
+                            Text(' in %% minutes '),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Card()
+            ],
+          ))
+    ]);
   }
 
-  Subject _getNextSubject() {
+  Future<Subject> _getNextSubject() async {
+    TimeOfDay now = TimeOfDay.now();
+
     throw UnimplementedError(
         'getNextClass private function not yet implemented.');
   }

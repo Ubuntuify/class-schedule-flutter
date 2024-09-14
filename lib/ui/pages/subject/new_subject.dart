@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:schedule/schema/subject.dart';
 import 'package:schedule/services/db.dart';
 
@@ -10,17 +11,21 @@ class NewSubjectPage extends StatefulWidget {
 }
 
 class _NewSubjectPageState extends State<NewSubjectPage> {
-  bool _isVisibleCheckbox = true;
-  bool _isRestPeriodCheckbox = false;
+  bool _visibleCheckbox = true;
+  bool _restPeriodCheckbox = false;
 
-  String _subjectName = '';
+  String _name = '';
+  String _location = '';
+  String _description = '';
 
   Future<void> _onSubmit(BuildContext context) async {
     DatabaseManager().insertSubject(Subject(
         id: null,
-        name: _subjectName,
-        isVisible: _isVisibleCheckbox,
-        isRestPeriod: _isRestPeriodCheckbox));
+        name: _name,
+        location: _location,
+        description: _description,
+        isVisible: _visibleCheckbox,
+        isRestPeriod: _restPeriodCheckbox));
 
     Navigator.of(context).pop();
   }
@@ -32,8 +37,6 @@ class _NewSubjectPageState extends State<NewSubjectPage> {
         child: Scaffold(
           appBar: AppBar(
               leading: const BackButton(), title: const Text('New Subject')),
-          // bottomNavigationBar: BottomAppBar(
-          //   child: ,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             child: Column(
@@ -47,29 +50,57 @@ class _NewSubjectPageState extends State<NewSubjectPage> {
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Subject'),
-                            onChanged: (subjectName) =>
-                                _subjectName = subjectName,
+                            onChanged: (subjectName) => _name = subjectName,
+                            autofocus: true,
                           ))),
                 ),
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: SizedBox(
+                          width: 375,
+                          child: TextField(
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Location'),
+                            onChanged: (text) => _location = text,
+                          ))),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: SizedBox(
+                          width: 375,
+                          height: 110,
+                          child: TextField(
+                            maxLength: 80,
+                            maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                            maxLines: 3,
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Description'),
+                            onChanged: (text) => _description = text,
+                          ))),
+                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Row(
                       children: [
                         Checkbox(
-                            value: _isRestPeriodCheckbox,
-                            onChanged: (checked) => setState(
-                                () => _isRestPeriodCheckbox = checked!)),
+                            value: _restPeriodCheckbox,
+                            onChanged: (status) =>
+                                setState(() => _restPeriodCheckbox = status!)),
                         const Text('Rest Period')
                       ],
                     )),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
                     children: [
                       Checkbox(
-                          value: _isVisibleCheckbox,
-                          onChanged: (checked) =>
-                              setState(() => _isVisibleCheckbox = checked!)),
+                          value: _visibleCheckbox,
+                          onChanged: (status) =>
+                              setState(() => _visibleCheckbox = status!)),
                       const Text(
                         'Visible',
                       )
