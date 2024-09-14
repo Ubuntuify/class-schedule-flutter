@@ -1,38 +1,6 @@
 import 'dart:core';
 
-class Subject {
-  // Primary key
-  final int id;
-
-  // Display name
-  final String name;
-
-  // If it is visible in the user interface
-  final bool isVisible;
-
-  // If the subject is a rest period and you should be notified
-  final bool isRestPeriod;
-
-  const Subject(
-      {required this.id, // primary key should always come first
-      required this.name,
-      required this.isVisible,
-      required this.isRestPeriod});
-
-  Map<String, Object?> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'is_visible': isVisible,
-      'is_rest_period': isRestPeriod,
-    };
-  }
-
-  @override
-  String toString() {
-    return "{'id': $id, 'name': $name, 'is_visible': $isVisible, 'is_rest_period': $isRestPeriod}";
-  }
-}
+import 'package:flutter/material.dart';
 
 class DaySchedule {
   // Primary key
@@ -63,9 +31,15 @@ class ScheduleTimeSlot {
   // Foreign key – day schedule id mapping.
   final int dayScheduleId;
 
-  // TODO: add a better date implementation
+  final TimeOfDay startTime;
 
-  const ScheduleTimeSlot({required this.id, required this.dayScheduleId});
+  final TimeOfDay endTime;
+
+  const ScheduleTimeSlot(
+      {required this.id,
+      required this.dayScheduleId,
+      required this.startTime,
+      required this.endTime});
 
   Map<String, Object?> toMap() {
     return {

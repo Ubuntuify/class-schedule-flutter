@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:schedule/schema/schedule.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:schedule/services/db.dart';
+
+import '../../schema/subject.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,14 +12,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final DatabaseManager databaseManager = DatabaseManager();
+
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(5),
-          child: Text('Hi, <PLACEHOLDER>!'),
-        )
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              'Hello, \$user!',
+              style: GoogleFonts.righteous(fontSize: 20, color: Colors.white),
+            ))
       ],
     );
   }

@@ -1,5 +1,7 @@
+import 'dart:developer' as dev;
+
 import 'package:path/path.dart';
-import 'package:schedule/schema/schedule.dart';
+import 'package:schedule/schema/subject.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseManager {
@@ -22,8 +24,8 @@ class DatabaseManager {
   // 🛠️ Internal functions used for backend database management.
   Future<Database> _initDatabase() async {
     final databasePath = await getDatabasesPath();
-
     final path = join(databasePath, 'app.db');
+    dev.log('Initializing database at $path');
 
     return await openDatabase(
       path,
@@ -36,37 +38,40 @@ class DatabaseManager {
   Future<void> _onCreate(Database db, int version) async {
     // TODO: finalize database implementation
 
-    // await db.execute(
-    //     'CREATE TABLE class (id INTEGER PRIMARY KEY, name TEXT, is_visible INTEGER, is_rest_period INTEGER)');
-    //
-    // await db.execute(
-    //     'CREATE TABLE day_schedule (id INTEGER PRIMARY KEY, weekday INTEGER, is_special INTEGER)');
-    //
-    // await db.execute(
-    //     'CREATE TABLE schedule_time_slot (id INTEGER PRIMARY KEY, day_schedule_id INTEGER, FOREIGN KEY (day_schedule_id) REFERENCES day_schedule (id) ON DELETE CASCADE ON UPDATE NO ACTION, starthour INTEGER, startminute INTEGER, endhour INTEGER, endminute INTEGER)');
-    //
-    // await db.execute(
-    //     'CREATE TABLE class_time (id INTEGER PRIMARY KEY, day_schedule_id INTEGER, FOREIGN KEY (day_schedule_id) REFERENCES day_schedule (id) ON DELETE CASCADE ON UPDATE NO ACTION, class_id INTEGER, FOREIGN KEY (class_id) REFERENCES class (id) ON DELETE CASCADEON UPDATE NO ACTION, schedule_time_slot_id INTEGER, FOREIGN KEY (schedule_time_slot_id) REFERENCES schedule_time_slot (id) ON DELETE CASCADE ON UPDATE NO ACTION)');
+    db.execute('''
+    CREATE TABLE subject ( 
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      name TEXT, 
+      is_visible INTEGER, 
+      is_rest_period INTEGER
+    );
+    ''');
   }
 
   // ✨ Subjects Table
   Future<List<Subject>> getSubjects() async {
-    final db = await database;
+    final db = await _databaseManager.database;
 
-    final List<Map<String, Object?>> subjects = await db.query('subjects');
+    final List<Map<String, Object?>> subjects = await db.query('subject');
 
     return [
       for (final {
             'id': id as int,
             'name': name as String,
             'is_visible': isVisible as bool,
-            'is_rest_period': isRestPriod as bool,
+            'is_rest_period': isRestPeriod as bool,
           } in subjects)
         Subject(
             id: id,
             name: name,
             isVisible: isVisible,
-            isRestPeriod: isRestPriod),
+            isRestPeriod: isRestPeriod),
     ];
+  }
+
+  Future<void> insertSubject(Subject subject) async {
+    final db = await _databaseManager.database;
+    await db.insert('subject', subject.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }
