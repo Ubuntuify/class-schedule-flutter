@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:schedule/ui/home.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:schedule/ui/app.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(const App());
 }
 
@@ -27,10 +27,21 @@ class App extends StatelessWidget {
       title: 'Schedule App (WIP)',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.green, brightness: Brightness.dark),
+            seedColor: Colors.green, brightness: Brightness.light),
+        brightness: Brightness.light,
         useMaterial3: true,
+        textTheme: GoogleFonts.bricolageGrotesqueTextTheme(),
       ),
-      home: const HomePage(),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.green, brightness: Brightness.dark),
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        textTheme: GoogleFonts.bricolageGrotesqueTextTheme(),
+      ),
+      themeMode: ThemeMode.system,
+      debugShowCheckedModeBanner: false,
+      home: const AppScaffold(),
     );
   }
 }
