@@ -32,5 +32,5 @@ class Subject {
 
   @override
   String toString() =>
-      "{'id': $id, 'name': $name, 'is_visible': $isVisible, 'is_rest_period': $isRestPeriod}";
+      "{'id': $id, 'name': $name, 'description': $description, 'location': $location, 'is_visible': $isVisible, 'is_rest_period': $isRestPeriod}";
 }

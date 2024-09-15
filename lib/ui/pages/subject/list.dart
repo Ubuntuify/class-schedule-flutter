@@ -1,5 +1,9 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
-import 'package:schedule/ui/pages/subject/new_subject.dart';
+import 'package:schedule/schema/subject.dart';
+import 'package:schedule/services/db.dart';
+import 'package:schedule/ui/pages/subject/edit.dart';
 
 class ClassListPage extends StatefulWidget {
   const ClassListPage({super.key});
@@ -19,6 +23,7 @@ class _ClassListPageState extends State<ClassListPage> {
             appBar: AppBar(
               leading: const BackButton(),
               title: const Text('Classes'),
+              scrolledUnderElevation: 2,
               actions: <Widget>[
                 IconButton(
                     onPressed: () => Navigator.of(context).push(
@@ -48,41 +53,105 @@ class ClassList extends StatefulWidget {
 }
 
 class _ClassListState extends State<ClassList> {
+  static Future<List<Subject>>? subjects;
+  bool hiddenVisibility = false;
+
+  @override
+  void initState() {
+    subjects = DatabaseManager().getSubjects();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // DatabaseManager().getSubjects().then((subjects) => {});
-    //
-    // if (subjects.isEmpty) {
-    //   return const Center(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: [
-    //         Icon(Icons.sentiment_very_dissatisfied_rounded),
-    //         Padding(padding: EdgeInsets.all(5)),
-    //         Text(
-    //           'There doesn\'t seem to be any classes right\nnow, maybe add one?',
-    //           textAlign: TextAlign.center,
-    //         )
-    //       ],
-    //     ),
-    //   );
-    // }
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FutureBuilder<List<Subject>>(
+            future: subjects,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Subject>> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data!.isEmpty) {
+                  dev.log("Subject table is empty, using empty widget.");
+                  return const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.sentiment_very_dissatisfied_rounded),
+                        Padding(
+                            padding: EdgeInsets.all(8),
+                            child: SizedBox(
+                              width: 220,
+                              child: Text(
+                                "There doesn't seem to be any classes right now, maybe add one?",
+                                textAlign: TextAlign.center,
+                              ),
+                            )),
+                      ],
+                    ),
+                  );
+                } else {
+                  List<Widget> widgets = [];
+                  for (var subject in snapshot.data!) {
+                    dev.log(subject.toString());
+                    if (hiddenVisibility || subject.isVisible) {
+                      widgets.add(Card.filled(
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ListTile(
+                            onTap: () => {}, //TODO:
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                height: 55,
+                                width: 55,
+                                decoration: BoxDecoration(
+                                    color: Colors.redAccent.shade100),
+                                child: const Center(
+                                  child: Icon(Icons.school_outlined),
+                                ),
+                              ),
+                            ),
+                            title: Text(subject.name),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  subject.description,
+                                  textAlign: TextAlign.left,
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on_outlined,
+                                      size: 20,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 3.0, vertical: 2),
+                                      child: Text(subject.location),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ));
+                    }
+                  }
 
-    return ListTile(
-      isThreeLine: true,
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(color: Colors.redAccent.shade100),
-          child: const Center(
-            child: Icon(Icons.school_outlined),
-          ),
-        ),
+                  return Column(children: widgets);
+                }
+              } else if (snapshot.hasError) {
+                throw Error();
+              } else {
+                // if: snapshot doesn't have a value yet.
+                return const Placeholder();
+              }
+            }),
       ),
-      title: const Text('Psychology 1A'),
-      subtitle: const Text('Lorem ipsum, viva la revolution!'),
     );
   }
 }

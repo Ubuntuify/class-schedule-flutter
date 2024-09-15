@@ -19,6 +19,10 @@ class _NewSubjectPageState extends State<NewSubjectPage> {
   String _description = '';
 
   Future<void> _onSubmit(BuildContext context) async {
+    if (_name == '') return; // TODO: give error feedback
+    if (_location == '') return;
+    if (_description == '') return;
+
     DatabaseManager().insertSubject(Subject(
         id: null,
         name: _name,
@@ -47,6 +51,8 @@ class _NewSubjectPageState extends State<NewSubjectPage> {
                       child: SizedBox(
                           width: 375,
                           child: TextField(
+                            maxLength: 10,
+                            maxLengthEnforcement: MaxLengthEnforcement.enforced,
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Subject'),
@@ -63,6 +69,8 @@ class _NewSubjectPageState extends State<NewSubjectPage> {
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Location'),
+                            maxLength: 10,
+                            maxLengthEnforcement: MaxLengthEnforcement.enforced,
                             onChanged: (text) => _location = text,
                           ))),
                 ),

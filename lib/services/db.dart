@@ -2,6 +2,7 @@ import 'dart:developer' as dev;
 
 import 'package:path/path.dart';
 import 'package:schedule/schema/subject.dart';
+import 'package:schedule/utility/utility.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseManager {
@@ -62,16 +63,16 @@ class DatabaseManager {
             'name': name as String,
             'description': description as String,
             'location': location as String,
-            'is_visible': isVisible as bool,
-            'is_rest_period': isRestPeriod as bool,
+            'is_visible': isVisible as int,
+            'is_rest_period': isRestPeriod as int,
           } in subjects)
         Subject(
             id: id,
             name: name,
             description: description,
             location: location,
-            isVisible: isVisible,
-            isRestPeriod: isRestPeriod),
+            isVisible: intToBool(isVisible),
+            isRestPeriod: intToBool(isRestPeriod)),
     ];
   }
 
