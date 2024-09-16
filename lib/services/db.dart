@@ -39,6 +39,8 @@ class DatabaseManager {
   Future<void> _onCreate(Database db, int version) async {
     // TODO: finalize database implementation
 
+    // ✨
+    // Create 'subject' table, implementation located in lib/schema/subject.dart
     db.execute('''
     CREATE TABLE subject ( 
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -47,6 +49,17 @@ class DatabaseManager {
       location TEXT,
       is_visible INTEGER, 
       is_rest_period INTEGER
+    );
+    ''');
+
+    // ✨
+    // Create 'day_schedule' table, implementation located in
+    // lib/schema/day_schedule
+    db.execute('''
+    CREATE TABLE day_schedule (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      weekday INTEGER,
+      is_special INTEGER
     );
     ''');
   }

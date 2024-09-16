@@ -3,7 +3,7 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:schedule/schema/subject.dart';
 import 'package:schedule/services/db.dart';
-import 'package:schedule/ui/pages/subject/edit.dart';
+import 'package:schedule/ui/pages/subject/new.dart';
 
 class ClassListPage extends StatefulWidget {
   const ClassListPage({super.key});
@@ -23,7 +23,7 @@ class _ClassListPageState extends State<ClassListPage> {
             appBar: AppBar(
               leading: const BackButton(),
               title: const Text('Classes'),
-              scrolledUnderElevation: 2,
+              scrolledUnderElevation: 1,
               actions: <Widget>[
                 IconButton(
                     onPressed: () => Navigator.of(context).push(
@@ -32,10 +32,12 @@ class _ClassListPageState extends State<ClassListPage> {
                     icon: const Icon(Icons.add)),
                 PopupMenuButton(
                     itemBuilder: (context) => [
-                          const PopupMenuItem(
+                          PopupMenuItem(
                               child: ListTile(
-                            leading: Icon(Icons.visibility_outlined),
-                            title: Text('Show hidden items'),
+                            leading: const Icon(Icons.visibility_outlined),
+                            title: Text(hiddenVisibility
+                                ? 'Hide' ' hidden items'
+                                : 'Show' ' hidden items'),
                           ))
                         ],
                     icon: const Icon(Icons.more_vert)),
@@ -73,6 +75,7 @@ class _ClassListState extends State<ClassList> {
                 (BuildContext context, AsyncSnapshot<List<Subject>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.isEmpty) {
+                  // TODO: change logic to pre-process table and use more native;
                   dev.log("Subject table is empty, using empty widget.");
                   return const Center(
                     child: Column(
@@ -92,63 +95,85 @@ class _ClassListState extends State<ClassList> {
                     ),
                   );
                 } else {
-                  List<Widget> widgets = [];
-                  for (var subject in snapshot.data!) {
-                    dev.log(subject.toString());
-                    if (hiddenVisibility || subject.isVisible) {
-                      widgets.add(Card.filled(
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: ListTile(
-                            onTap: () => {}, //TODO:
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                height: 55,
-                                width: 55,
-                                decoration: BoxDecoration(
-                                    color: Colors.redAccent.shade100),
-                                child: const Center(
-                                  child: Icon(Icons.school_outlined),
-                                ),
+                  // ✨
+                  // Filters based on visibility.
+                  Iterable<Subject> visibleSubjects = !hiddenVisibility
+                      ? snapshot.data!.where((data) => data.isVisible)
+                      : snapshot.data!;
+
+                  return ListView.separated(
+                    itemCount: visibleSubjects.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
+                    itemBuilder: (BuildContext context, int index) {
+                      Subject subject = visibleSubjects.toList()[index];
+
+                      return ListTile(
+                          onTap: () => {},
+                          onLongPress: () => {},
+
+                          // ✨
+                          // Creates the logo before the subject for cool factor.
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Container(
+                              height: 55,
+                              width: 55,
+                              decoration: BoxDecoration(
+                                  // proper dark mode support
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .primaryFixed
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary),
+                              child: const Center(
+                                child: Icon(Icons.school_outlined),
                               ),
                             ),
-                            title: Text(subject.name),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  subject.description,
-                                  textAlign: TextAlign.left,
-                                ),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.location_on_outlined,
-                                      size: 20,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3.0, vertical: 2),
-                                      child: Text(subject.location),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
                           ),
-                        ),
-                      ));
-                    }
-                  }
 
-                  return Column(children: widgets);
+                          // ✨
+                          // Actual subject information.
+                          title: Text(subject.name),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                subject.description,
+                                textAlign: TextAlign.left,
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on_outlined,
+                                    size: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 3.0, vertical: 2),
+                                    child: Text(subject.location),
+                                  )
+                                ],
+                              )
+                            ],
+                          ));
+                    },
+                  );
                 }
               } else if (snapshot.hasError) {
                 throw Error();
               } else {
                 // if: snapshot doesn't have a value yet.
-                return const Placeholder();
+                return const Center(
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               }
             }),
       ),

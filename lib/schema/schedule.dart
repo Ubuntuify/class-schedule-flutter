@@ -8,7 +8,7 @@
 //   final int dayScheduleId;
 //
 //   // Foreign key – Subject
-//   final int subjectId;
+//   final int subjectsId;
 //
 //   // Foreign key – ScheduleTimeSlot
 //   final int scheduleTimeSlotId;

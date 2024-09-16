@@ -26,19 +26,16 @@ class _AppScaffoldState extends State<AppScaffold> {
       canPop: true,
       child: Scaffold(
         body: navigationPages[navigationIndex],
-        appBar: AppBar(title: const Text('Hello, Ryan!'), actions: <Widget>[
+        appBar: AppBar(actions: <Widget>[
           IconButton(
               onPressed: () => throw UnimplementedError(),
-              icon: const Icon(Icons.notifications_none))
+              icon: const Icon(Icons.notifications_none)),
+          IconButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ClassListPage())),
+              icon: const Icon(Icons.school_outlined))
           // TODO: change when notification system is completed
         ]),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () =>
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const ClassListPage())),
-          child: const Icon(Icons.add),
-        ),
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) =>
               setState(() => navigationIndex = index),
@@ -50,7 +47,7 @@ class _AppScaffoldState extends State<AppScaffold> {
             NavigationDestination(
                 icon: Icon(Icons.calendar_month_outlined),
                 selectedIcon: Icon(Icons.calendar_month),
-                label: 'Classes'),
+                label: 'Schedule'),
             NavigationDestination(
                 icon: Icon(Icons.settings_outlined),
                 selectedIcon: Icon(Icons.settings),
