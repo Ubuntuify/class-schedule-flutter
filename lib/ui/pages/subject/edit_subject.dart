@@ -5,10 +5,13 @@ import 'package:schedule/services/db.dart';
 import 'package:schedule/util/validate.dart';
 
 class EditSubjectPage extends StatefulWidget {
-  const EditSubjectPage({super.key, this.subject, required this.editMode});
+  const EditSubjectPage(
+      {super.key, this.subject, required this.editMode, this.callback});
 
   final Subject? subject;
   final bool editMode;
+
+  final Function? callback;
 
   @override
   State<EditSubjectPage> createState() => _EditSubjectPageState();
@@ -17,7 +20,7 @@ class EditSubjectPage extends StatefulWidget {
 class _EditSubjectPageState extends State<EditSubjectPage> {
   // ✨
   // All fields within the EditSubjectPage class. Assigned a value during widget
-  // build.
+  // initialization.
   late String _name;
   late String _location;
   late String _description;
@@ -51,6 +54,8 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
         isVisible: _visibleCheckbox,
         isRestPeriod: _restPeriodCheckbox));
 
+    widget.callback!();
+
     // ✨
     // Pops the current screen, once finished.
     Navigator.of(context).pop();
@@ -61,12 +66,18 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // 🚫
+    // This is an error check for making sure an invalid state does not occur.
     if (widget.editMode && widget.subject == null) {
       throw ArgumentError(
-          'editMode was true, when a Subject was not passed to the Widget.');
+          'EditSubjectPage.editMode was true, when a Subject was not passed to the Widget.');
     }
 
+    // ✨
+    // Since both create and edit subject pages are now integrated, we can no longer set
+    // the variables at initialization. It is now set at initState() when the page gets
+    // added to the Navigator.
     _name = widget.editMode ? widget.subject!.name : '';
     _location = widget.editMode ? widget.subject!.location : '';
     _description = widget.editMode ? widget.subject!.description : '';
@@ -74,6 +85,13 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
     _restPeriodCheckbox =
         widget.editMode ? widget.subject!.isRestPeriod : false;
 
+    // ✨
+    // Continue initializing the Widget? state.
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List<Widget> formOptions = [
       Padding(
         padding: const EdgeInsets.all(8.0),

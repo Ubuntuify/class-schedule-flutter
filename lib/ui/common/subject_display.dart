@@ -8,11 +8,12 @@ import 'icon.dart';
 enum SubjectDisplayMenuBar { delete, edit }
 
 class SubjectDisplayItem extends StatefulWidget {
-  const SubjectDisplayItem({super.key, required this.subject});
+  const SubjectDisplayItem({super.key, required this.subject, this.callback});
 
   // ✨
   // Subject to display.
   final Subject subject;
+  final Function? callback;
 
   @override
   State<SubjectDisplayItem> createState() => _SubjectDisplayItemState();
@@ -27,9 +28,10 @@ class _SubjectDisplayItemState extends State<SubjectDisplayItem> {
 
     final RelativeRect position = RelativeRect.fromRect(
         Rect.fromPoints(
-            displayItem.localToGlobal(displayItem.size.bottomLeft(Offset.zero)),
-            displayItem
-                .localToGlobal(displayItem.size.bottomRight(Offset.zero))),
+            displayItem.localToGlobal(
+                displayItem.size.bottomLeft(Offset.fromDirection(18))),
+            displayItem.localToGlobal(
+                displayItem.size.bottomRight(Offset.fromDirection(18)))),
         Offset.zero & overlay.size);
 
     showMenu(
@@ -72,11 +74,11 @@ class _SubjectDisplayItemState extends State<SubjectDisplayItem> {
             ),
             actions: <Widget>[
               TextButton(
-                  onPressed: () => throw UnimplementedError(),
-                  child: const Text('Yes, I\'m sure')),
-              TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('No')),
+              TextButton(
+                  onPressed: () => throw UnimplementedError(),
+                  child: const Text('Delete anyways')),
             ],
           );
         });

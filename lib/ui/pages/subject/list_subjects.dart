@@ -25,6 +25,12 @@ class _ClassListPageState extends State<ClassListPage> {
     super.initState();
   }
 
+  void _reloadList() {
+    setState(() {
+      subjects = DatabaseManager().getSubjects();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -46,8 +52,8 @@ class _ClassListPageState extends State<ClassListPage> {
                     // Push the new subject page onto the stack.
                     onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const EditSubjectPage(editMode: false))),
+                            builder: (context) => EditSubjectPage(
+                                editMode: false, callback: _reloadList))),
                     tooltip: 'Add subject',
                     icon: const Icon(Icons.add)),
                 PopupMenuButton(
@@ -130,7 +136,8 @@ class _ClassListPageState extends State<ClassListPage> {
                             // Gets current subject by using the index provided as a list.
                             Subject subject = visibleSubjects.toList()[index];
 
-                            return SubjectDisplayItem(subject: subject);
+                            return SubjectDisplayItem(
+                                subject: subject, callback: _reloadList);
                           },
                         );
                       } else if (snapshot.hasError) {
