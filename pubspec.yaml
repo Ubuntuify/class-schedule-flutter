@@ -33,6 +33,7 @@ dependencies:
   sqflite: ^2.3.3+1
   path: ^1.9.0
   google_fonts: ^6.2.1
+  flutter_local_notifications: ^17.2.2
 
 dev_dependencies:
   flutter_test:
@@ -86,3 +87,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+  assets:
+    - assets/fonts/

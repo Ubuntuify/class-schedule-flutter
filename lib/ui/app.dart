@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:schedule/ui/pages/home.dart';
 import 'package:schedule/ui/pages/schedule.dart';
 import 'package:schedule/ui/pages/settings.dart';
-import 'package:schedule/ui/pages/subject/list.dart';
+import 'package:schedule/ui/pages/subject/list_subjects.dart';
 
 class AppScaffold extends StatefulWidget {
   const AppScaffold({super.key});
@@ -29,10 +29,12 @@ class _AppScaffoldState extends State<AppScaffold> {
         appBar: AppBar(actions: <Widget>[
           IconButton(
               onPressed: () => throw UnimplementedError(),
+              tooltip: 'Notifications',
               icon: const Icon(Icons.notifications_none)),
           IconButton(
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const ClassListPage())),
+              tooltip: 'Classes',
               icon: const Icon(Icons.school_outlined))
           // TODO: change when notification system is completed
         ]),

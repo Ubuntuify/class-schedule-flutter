@@ -2,7 +2,7 @@ import 'dart:developer' as dev;
 
 import 'package:path/path.dart';
 import 'package:schedule/schema/subject.dart';
-import 'package:schedule/utility/utility.dart';
+import 'package:schedule/util/util.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseManager {
