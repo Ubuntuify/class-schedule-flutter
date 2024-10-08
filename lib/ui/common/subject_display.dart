@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:schedule/schema/subject.dart';
-import 'package:schedule/ui/pages/subject/edit_subject.dart';
-import 'package:schedule/ui/pages/subject/view_subject.dart';
+import 'package:schedule/services/db.dart';
+import 'package:schedule/ui/pages/subject/subject_modify.dart';
+import 'package:schedule/ui/pages/subject/subject_page.dart';
 
 import 'icon.dart';
 
@@ -44,6 +45,7 @@ class _SubjectDisplayItemState extends State<SubjectDisplayItem> {
             ),
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => EditSubjectPage(
+                      callback: widget.callback,
                       subject: widget.subject,
                       editMode: true,
                     ))),
@@ -77,7 +79,11 @@ class _SubjectDisplayItemState extends State<SubjectDisplayItem> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('No')),
               TextButton(
-                  onPressed: () => throw UnimplementedError(),
+                  onPressed: () {
+                    DatabaseManager().deleteSubject(widget.subject);
+                    Navigator.of(context).pop();
+                    widget.callback!();
+                  },
                   child: const Text('Delete anyways')),
             ],
           );

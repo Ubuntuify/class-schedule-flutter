@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:schedule/schema/subject.dart';
 import 'package:schedule/services/db.dart';
 import 'package:schedule/ui/common/subject_display.dart';
-import 'package:schedule/ui/pages/subject/edit_subject.dart';
+import 'package:schedule/ui/pages/subject/subject_modify.dart';
 
 class ClassListPage extends StatefulWidget {
   const ClassListPage({super.key});
@@ -21,13 +21,13 @@ class _ClassListPageState extends State<ClassListPage> {
 
   @override
   void initState() {
-    subjects = DatabaseManager().getSubjects();
+    subjects = DatabaseManager().subjects();
     super.initState();
   }
 
   void _reloadList() {
     setState(() {
-      subjects = DatabaseManager().getSubjects();
+      subjects = DatabaseManager().subjects();
     });
   }
 
@@ -140,8 +140,6 @@ class _ClassListPageState extends State<ClassListPage> {
                                 subject: subject, callback: _reloadList);
                           },
                         );
-                      } else if (snapshot.hasError) {
-                        throw Error();
                       } else {
                         // if: snapshot doesn't have a value yet.
                         return const Center(

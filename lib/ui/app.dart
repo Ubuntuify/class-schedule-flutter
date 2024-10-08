@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:schedule/ui/pages/home.dart';
 import 'package:schedule/ui/pages/schedule.dart';
 import 'package:schedule/ui/pages/settings.dart';
-import 'package:schedule/ui/pages/subject/list_subjects.dart';
+import 'package:schedule/ui/pages/subject/subject_list.dart';
 
 class AppScaffold extends StatefulWidget {
   const AppScaffold({super.key});

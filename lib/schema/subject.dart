@@ -1,4 +1,8 @@
+import 'package:schedule/util/util.dart';
+
 class Subject {
+  //
+  //
   final int? id; // primary key
   final String name;
   final String description;
@@ -25,10 +29,15 @@ class Subject {
     };
   }
 
-  // factory Subject.fromMap(Map<String, dynamic> map) {
-  //   return Subject(
-  //       id: map['id'], name: 'default', isVisible: true, isRestPeriod: false);
-  // }
+  factory Subject.fromMap(Map<String, dynamic> map) {
+    return Subject(
+        id: map['id'],
+        name: map['name'],
+        description: map['description'],
+        location: map['location'],
+        isVisible: intToBool(map['is_visible']),
+        isRestPeriod: intToBool(map['is_rest_period']));
+  }
 
   @override
   String toString() =>

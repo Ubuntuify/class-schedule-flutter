@@ -27,10 +27,6 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
   late bool _visibleCheckbox;
   late bool _restPeriodCheckbox;
 
-  Future<void> _onUpdate(BuildContext context) async {
-    Navigator.of(context).pop();
-  }
-
   Future<void> _onSubmit(BuildContext context) async {
     // ✨
     // Empty text fields create undefined behavior in the SQLite database. There
@@ -46,13 +42,19 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
     // Uses the DatabaseManager to insert a subject. It will replace if there is
     // an existing instance, therefore ID is not provided as an editable argument
     // for users.
-    DatabaseManager().insertSubject(Subject(
-        id: null,
+    Subject createdSubject = Subject(
+        id: widget.editMode ? widget.subject!.id : null,
         name: _name,
         location: _location,
         description: _description,
         isVisible: _visibleCheckbox,
-        isRestPeriod: _restPeriodCheckbox));
+        isRestPeriod: _restPeriodCheckbox);
+
+    if (widget.editMode) {
+      DatabaseManager().updateSubject(createdSubject);
+    } else {
+      DatabaseManager().insertSubject(createdSubject);
+    }
 
     widget.callback!();
 
@@ -60,8 +62,10 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
     // Pops the current screen, once finished.
     Navigator.of(context).pop();
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Successfully created class'),
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(widget.editMode
+            ? 'Successfully updated course "${createdSubject.name}"!'
+            : 'Successfully created course!'),
         behavior: SnackBarBehavior.floating));
   }
 
@@ -200,8 +204,7 @@ class _EditSubjectPageState extends State<EditSubjectPage> {
               : const Text('New Subject'),
           actions: <Widget>[
             TextButton(
-                onPressed: () =>
-                    widget.editMode ? _onUpdate(context) : _onSubmit(context),
+                onPressed: () => _onSubmit(context),
                 child:
                     widget.editMode ? const Text('Save') : const Text('Create'))
           ],

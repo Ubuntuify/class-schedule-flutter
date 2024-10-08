@@ -6,6 +6,8 @@ import 'package:schedule/ui/app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  FutureBuilder.debugRethrowError = true;
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent,
